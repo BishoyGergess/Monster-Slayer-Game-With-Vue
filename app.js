@@ -10,9 +10,9 @@
         methods:{
             //Functions Built on ES5 Synatx cause ES6 still not stable in all browswers 
             gameStarting:function(){
+                this.resetGame();
                 this.gameStarted = true;
-                this.player = 100;
-                this.monster = 100;
+                
             },
             attack:function(){
                 var damage  = this.calculateDamage(3,10);
@@ -21,8 +21,13 @@
                     isPlayer:true,
                     text:'The Monster Lost ' + damage + 'Points'
                 });
-                this.checkWin();
-                this.monsterAttack();
+                if(this.checkWin()){
+                    this.checkWin();
+                    return;
+                }else{
+                    this.monsterAttack();
+                }
+                
             },
             specialAttack:function(){
                 var damage = this.calculateDamage(10,20);
@@ -31,8 +36,12 @@
                     isPlayer:true,
                     text:'The Monster Lost ' + damage + 'Points'
                 });
-                this.checkWin();
-                this.monsterAttack();
+                if(this.checkWin()){
+                    this.checkWin();
+                    return;
+                }else{
+                    this.monsterAttack();
+                }
             },
             heal:function(){
                 if(this.player<=90){
@@ -72,6 +81,7 @@
                 return Math.max(Math.floor(Math.random()*max),min);
             },
             monsterAttack:function(){
+           
                 var damage = this.calculateDamage(3,15);
                 this.player -= damage;               
                 this.attacks.unshift({
@@ -79,24 +89,27 @@
                     text:'The Player Lost ' + damage + 'Points'
                 });
                 this.checkWin();
+                
             },
             checkWin:function(){
                 if(this.player<=0){
                     alert("you lose");
                     if(confirm('Do you want to play Again !!')){
                     this.resetGame();
+                    return true;
                     }
                     else{
-                    return;
+                    return false;
                     }
                 }
                 else if(this.monster<=0){
                     alert("you Won");
                     if(confirm('Do you want to play Again !!')){
                     this.resetGame();
+                    return true;
                     }
                     else{
-                    return;
+                    return false;
                     }
 
                 }
